@@ -1,0 +1,46 @@
+<!DOCTYPE Book PUBLIC "-//OASIS//DTD DocBook V4.2//EN" [
+
+<!ENTITY user SYSTEM "enum_user.sgml">
+<!ENTITY devel SYSTEM "enum_devel.sgml">
+<!ENTITY faq SYSTEM "enum_faq.sgml">
+
+<!-- Include general documentation entities -->
+<!ENTITY % docentities SYSTEM "../../../doc/entities.sgml">
+%docentities;
+
+]>
+
+<book>
+    <bookinfo>
+	<title>Enum Module</title>
+	<authorgroup>
+	    <author>
+		<firstname>Juha</firstname>
+		<surname>Heinanen</surname>
+		<email>jh@song.fi</email>
+	    </author>
+	    <author>
+		<firstname>Otmar</firstname>
+		<surname>Lendl</surname>
+		<email>lendl@nic.at</email>
+	    </author>
+	</authorgroup>
+	<copyright>
+	    <year>2002</year>
+	    <year>2003</year>
+	    <holder>Juha Heinanen</holder>
+	</copyright>
+	<revhistory>
+	    <revision>
+		<revnumber>$Revision: 1223 $</revnumber>
+		<date>$Date: 2006-11-02 21:53:45 +0100 (Thu, 02 Nov 2006) $</date>
+	    </revision>
+	</revhistory>
+    </bookinfo>
+    <toc></toc>
+    
+    &user;
+    &devel;
+    &faq;
+
+</book>

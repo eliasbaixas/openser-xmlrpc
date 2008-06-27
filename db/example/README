@@ -1,0 +1,7 @@
+$Id: README 2 2005-06-13 16:47:24Z bogdan_iancu $
+
+This is very simple example module that shows how to
+use database interface.
+
+If you want to compile this module, move it to modules
+directory.

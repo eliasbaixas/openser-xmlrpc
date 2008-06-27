@@ -1,0 +1,117 @@
+#
+# $Id: Makefile.rules 2918 2007-10-14 22:06:42Z dan_pascu $
+#
+#
+# common Makefile rules, included by main Makefile & the  modules
+#
+
+#
+# Uses: NAME, ALLDEP, CC, CFLAGS, DEFS, LIBS, MKDEP, auto_gen, depends, objs,
+# extra_objs, static_modules, static_modules_path
+# (all this must  be defined previously!,  see Makefile.defs & Makefile)
+#
+
+#implicit rules
+%.o: %.c $(ALLDEP)
+	@echo "Compiling $<"
+	$(Q)$(CC) $(CFLAGS) $(DEFS) -c $< -o $@
+
+%.d: %.c $(ALLDEP)
+	@set -e; $(MKDEP) $(DEFS) $< \
+	|  sed 's#\(\($*D)\)\?$(*F)\)\.o[ :]*#$*.o $@ : #g' > $@; \
+	[ -s $@ ] || rm -f $@
+
+
+# normal rules
+$(NAME): $(NEWSVNREVISION) $(objs) $(ALLDEP)
+	@echo "Linking $(NAME)"
+	$(Q)$(LD) $(LDFLAGS) $(objs) $(extra_objs) $(LIBS) -o $(NAME) 
+
+
+.PHONY: all
+all: $(NAME) modules
+
+.PHONY: dep
+dep: $(depends)
+
+.PHONY: static
+static: $(objs)
+
+.PHONY: dosvnrev
+dosvnrev:
+	@echo "New SVN revision: $(SVNREVISION)"
+	@if [ -f "main.o" ] ; then \
+		rm main.o ; \
+	fi
+	@echo "$(SVNREVISION)" >.svnrevision
+
+.PHONY: docbook-clean
+docbook-clean:
+	-@for r in $(modules) $(static_modules_path) "" ; do \
+		if [ -d "$$r" ]; then \
+			if [ -d "$$r"/doc ]; then \
+				rm -f "$$r"/doc/*.txt ; \
+				rm -f "$$r"/doc/*.html ; \
+				rm -f "$$r"/doc/*.pdf ; \
+			fi ; \
+		fi ; \
+	done
+
+.PHONY: dbschema-docbook-clean
+dbschema-docbook-clean:
+	-@if [ -d doc/database ] ; then \
+		rm -f doc/database/*.txt ; \
+		rm -f doc/database/*.html ; \
+		rm -f doc/database/*.pdf ; \
+		$(MAKE) -C db/schema docbook_clean; \
+	fi
+
+.PHONY: clean
+clean: docbook-clean dbschema-docbook-clean
+	-@rm -f $(objs) $(NAME) $(objs:.o=.il) 2>/dev/null
+	-@for r in $(modules) $(static_modules_path) "" ; do \
+		if [ -d "$$r" ]; then \
+			$(MAKE) -C $$r clean ; \
+		fi ; \
+	done
+	-@if [ -d utils/openserunix ]; then $(MAKE) -C utils/openserunix clean; fi
+
+.PHONY: proper
+.PHONY: distclean
+.PHONY: realclean
+proper realclean distclean: clean 
+	-@rm -f $(depends) $(auto_gen) 2>/dev/null
+	-@rm -f cfg.tab.h 2>/dev/null
+	-@for r in $(modules) "" ; do \
+		if [ -d "$$r" ]; then \
+			 $(MAKE) -C $$r proper ; \
+		fi ; \
+	done 
+	-@if [ -d utils/openserunix ]; then $(MAKE) -C utils/openserunix proper; fi
+	-@if [ -d utils/db_berkeley ]; then $(MAKE) -C utils/db_berkeley proper; fi
+
+.PHONY: mantainer-clean
+mantainer-clean: distclean
+	-rm -f TAGS tags *.dbg .*.swp
+	-@for r in $(modules) "" ; do \
+		if [ -d "$$r" ]; then \
+			$(MAKE) -C $$r mantainer-clean; \
+		fi ; \
+	 done 
+	-@if [ -d utils/openserunix ]; then $(MAKE) -C utils/openserunix mantainer-clean; fi
+
+
+.PHONY: install_module_custom
+
+
+.PHONY: TAGS
+TAGS:
+	$(MKTAGS) 
+
+ifeq (,$(MAKECMDGOALS))
+-include $(depends)
+endif
+ifneq (,$(filter-out clean proper distclean realclean mantainer-clean TAGS \
+		tar modules, $(MAKECMDGOALS)))
+-include $(depends)
+endif

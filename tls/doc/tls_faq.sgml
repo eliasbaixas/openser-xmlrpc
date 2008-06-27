@@ -1,0 +1,96 @@
+<!-- Module FAQ -->
+
+<chapter>
+	<chapterinfo>
+	<revhistory>
+		<revision>
+		<revnumber>$Revision: 682 $</revnumber>
+		<date>$Date: 2006-02-22 18:26:06 +0100 (Wed, 22 Feb 2006) $</date>
+		</revision>
+	</revhistory>
+	</chapterinfo>
+	<title>Frequently Asked Questions</title>
+	<qandaset defaultlabel="number">
+	<qandaentry>
+		<question>
+		<para>Where can I post a question about TLS?</para>
+		</question>
+		<answer>
+		<para>
+			Use one (the most appropriate) of the &ser; mailing lists:
+		</para>
+		<itemizedlist>
+			<listitem>
+			<para>User Mailing List - &seruserslink;</para>
+			</listitem>
+			<listitem>
+			<para>Developer Mailing List - &serdevlink;</para>
+			</listitem>
+		</itemizedlist>
+		<para>
+			Remember: first at all, check if your question wasn't already
+			answered.
+		</para>
+		<para>
+			if you want to keep the mail private, send it to
+			&serhelpmail;.
+		</para>
+		<para>
+			Also you can address to SER's user mailing list:
+		</para>
+		<itemizedlist>
+			<listitem>
+			<para>User Mailing List - serusers@iptel.org;</para>
+			</listitem>
+		</itemizedlist>
+		<warning><para>
+			NOTE that SER TLS and OpenSER TLS  may not be compatible (as
+			features / behaviour) in the future.
+		</para></warning>
+		</answer>
+	</qandaentry>
+	<qandaentry>
+		<question>
+		<para>How can I report a bug?</para>
+		</question>
+		<answer>
+		<para>
+			Accumulate as much as possible information (&ser; version,
+			openser -V output, your OS (uname -a), &ser; logs, network dumps,
+			core dump files, configuration file)
+			and send a mail to &serdevlink;
+		</para>
+		<para>
+			Also you may try SER's bug report web page:
+			http://bugs.sip-router.org
+		</para>
+		<warning><para>
+			NOTE that SER TLS and OpenSER TLS  may not be compatible (as code)
+			in the future, each version having its own bugs/problems.
+		</para></warning>
+	</answer>
+	</qandaentry>
+	<qandaentry>
+		<question>
+		<para>How can I debug ssl/tls problems?</para>
+		</question>
+		<answer>
+		<para>
+			Increase the log level in openser.cfg (debug=4) and watch the log
+			statements in syslog.
+		</para>
+		<para>
+			Install the ssldump utility and start it. This will give you a trace
+			of the ssl/tls connections.
+		</para>
+	</answer>
+	</qandaentry>
+
+	</qandaset>
+</chapter>
+
+<!-- Keep this element at the end of the file
+Local Variables:
+sgml-parent-document: ("tls.sgml" "Book" "chapter")
+End:
+-->

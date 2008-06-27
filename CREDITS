@@ -1,0 +1,252 @@
+#=============#
+#   OpenSER   #
+#=============#
+
+Current OpenSER core team in alphabetical order as of 12 March 2007:
+
+Bogdan Andrei Iancu
+Daniel-Constantin Mierla
+Ramona-Elena Modroiu
+
+Contributors:
+
+Anca Vamanu
+Andreas Granig
+Bastian Friedrich
+Cesc Santasusana
+Christian Schlatter
+Dan Pascu
+Di-Shi Sun
+Dmitry Isakbayev
+Elias Baixas
+Glenn Marmon
+Henning Westerholt
+Jeffrey Magder
+Jesus Rodrigues
+Juha Heinanen
+Klaus Darilion
+Lavinia Andrei Spirea
+Marco Lorrai
+Norman Brandinger
+Ron Winacott
+William Quan
+
+Credits - patches, bug reporting and documentation improvements
+
+Alex Boeger
+Adrian Georgescu
+Alex Gradinari
+Alex Hermann
+Alex (ukr.net)
+Alfred E. Heggestad
+Anand Kumria
+Anatoly Pidruchny
+Ancuta Onofrei
+Anders Brownworth
+Andrea Giordana
+Andreas Heise
+Andrei Pelinescu-Onciul
+Andrew Newton
+Andrew T Gin
+Andy Pyles
+Antonio Higuera
+Aron Rosenberg
+Aron Rosenbergs
+Arve Rasmussen
+Atle Samuelsen
+Axel Hunger
+Aymeric Moizard
+Babon Frederic
+Bastian Schern
+Bayan William Towfiq
+Begeragus Lmerov
+Benny Prijono
+Ben Smithurst
+Bob Atkins
+Boris Bliznioukov
+Borislav Ivandic
+Carsten Bock
+Cesar Troncoso
+Cheng Zhang
+Chris Robson
+Christophe Irles
+Cristian Caprar
+Dan Cristian Bogos
+Daniel Flinkmann
+Daniel Hsueh
+Dan Pascu
+Daryl Sanders
+Daryl G. Jurbala
+DarylVoip
+Dave Waiting
+Dmitry Semyonov
+Douglas Garstang
+Doug Meredith
+Dragos Oancea
+Edson
+Eliot Gable
+Eliott Spencer
+Elton Machado
+Essobi
+Evan Borgstrom
+Federico Cabiddu
+Federico Giannici
+Florian Overkamp
+Francesco Castellano
+Francisco Ivandic
+Francisco Olarte Sanz
+Frank Garcia
+Franz Edler
+Franz Wu
+Gaurav Kulshreshtha
+Gerd Steen
+Glenn Dalgliesh
+Gordon Smith
+Greg Fausak
+Gustavo Garcia
+Hans Hoppe
+Helge Waastad
+Helmut Kuper
+Hendrik Scholz
+Henri Keski-Sikkila
+Herman Sheremetyev
+H Quintana
+Inaki Baz Castillo
+Ingo Flaschberger
+Jeremie Le Hen
+Jerome Martin
+JFKavaka
+John Riordan
+Jon Hood
+Jose Maria Gonzalez
+Juan Carlos Castro y Castro
+Julien Blache
+Kanakatti Mahesh Subramanya
+Khalukhin Alexander
+Kobi Eshun
+Lars Sundqvist
+Laurent Schweizer
+Lenir Santiago
+lilichun
+Mahesh Paolini-Subramanya
+Marc Haisenko
+Marcos Hack
+Marcus Hunger
+Mark Baker
+Mark Kent
+Martin (campus-merseburg)
+Martin Koenig
+Matthew M. Boedicker
+Matt Schulte
+Michael Samuel
+Michael Ulitskiy
+Michel Bensoussan
+Michel de Boer
+Mikael Magnusson
+Mika Saari
+Mik Cheez
+Mircea Amarascu
+Morgan Gilroy
+Nicolas Palix
+Ohad Levy
+Olaf Bergmann
+Otmar Lendl
+Ovidiu Sas
+Papadopoulos Georgios
+Patrick Jordan-Smith
+Paulo Angonese
+Peter Lemenkov
+Peter Nixon
+Philippe Sultan
+Quang Minh Phan
+Radu State
+Rafael J. Risco
+Ranveer Kunal
+Raymond Chen
+Reinhold Buchinger
+Richard Z
+Ruchir Brahmbhatt
+Ryan (matty91)
+Samuel (samu60)
+Samwise
+Sebastian Schumann
+Simon Morvan
+Stefan Catruna
+Stefan Popescu
+sukerry
+Sumeet Gupta
+Tais M. Hansen
+Tavis P
+Tavis Paquette
+tele (plexia.com)
+Thomas Gelf
+Tobias Lindgren
+Toni Barata
+Tony Jago
+Unplug
+Urtho
+Vallimamod Abdullah
+Victor Gamov
+Walter Schober
+Wolfgang Hottgenroth
+Wouter Schoot
+
+Tutorials
+
+Bogdan-Andrei Iancu
+Daniel-Constantin Mierla
+Dmitry Isakbayev
+Elena-Ramona Modroiu
+Glenn Dalgliesh
+Klaus Darilion
+Mike Williams
+Norman Brandinger
+
+Emeritus documentation contributors:
+
+Edson
+Gerry Jacobsen
+Norman Brandinger
+
+
+
+#=============#
+#     SER     #
+#=============#
+
+Current ser core team in alphabetical order as of 23 November 2004:
+
+Andrei Pelinescu - Onciul
+Bogdan Andrei Iancu
+Daniel-Constantin Mierla
+Jan Janak
+Jiri Kuthan
+
+
+Contributors:
+
+Adrian Georgescu
+Dan Pascu
+Greg Fausak
+Jamey Hicks
+Juha Heinanen
+Maxim Sobolev
+Miklos Tirpak
+Nils Ohlmeier
+Ramona-Elena Modroiu
+Raphael Coeffic
+
+
+Emeritus contributors (old ser contributors now off doing other things):
+
+Gabriel Vasile
+Ricardo Baratto
+Stelios Sidiroglou-Douskos
+
+
+Outstanding email support (ser users which helped a lot other people on 
+                           ser's mailing lists):
+
+Java Rockx
+Klaus Darilion
+Zeus Ng

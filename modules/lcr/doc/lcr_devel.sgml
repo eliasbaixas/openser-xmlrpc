@@ -1,0 +1,22 @@
+<!-- Module Developer's Guide -->
+
+<chapter>
+    <chapterinfo>
+	<revhistory>
+	    <revision>
+		<revnumber>$Revision: 109 $</revnumber>
+		<date>$Date: 2005-07-12 22:37:58 +0200 (Tue, 12 Jul 2005) $</date>
+	    </revision>
+	</revhistory>
+    </chapterinfo>
+    <title>Developer's Guide</title>
+    <para>
+	The module does not provide any <acronym>API</acronym> to use in other &ser; modules.
+    </para>
+</chapter>
+
+<!-- Keep this element at the end of the file
+Local Variables:
+sgml-parent-document: ("lcr.sgml" "book" "chapter")
+End:
+-->

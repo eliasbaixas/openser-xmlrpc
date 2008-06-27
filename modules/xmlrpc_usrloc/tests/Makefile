@@ -1,0 +1,6 @@
+
+xmlrpc_ht_client: xmlrpc_ht_client.c
+	gcc -g -o xmlrpc_ht_client  xmlrpc_ht_client.c  -I/Users/elias/src/c/xmlrpc-c/include -L/opt/local/lib -lwwwxml -lxmltok -lxmlparse -lwwwzip -lwwwinit -lwwwapp -lwwwhtml -lwwwtelnet -lwwwnews -lwwwhttp -lwwwmime -lwwwgopher -lwwwftp -lwwwfile -lwwwdir -lwwwcache -lwwwstream -lwwwmux -lwwwtrans -lwwwcore -lwwwutils -lmd5 -ldl -lz -L/opt/local/lib -lssl -lcrypto -lz -L/opt/local/lib -lcurl -L/opt/local/lib -L/opt/local/lib -lz /Users/elias/src/c/xmlrpc-c/src/.libs/libxmlrpc_client.a /Users/elias/src/c/xmlrpc-c/src/.libs/libxmlrpc.a /Users/elias/src/c/xmlrpc-c/lib/libutil/.libs/libxmlrpc_util.a /Users/elias/src/c/xmlrpc-c/lib/expat/xmlparse/.libs/libxmlrpc_xmlparse.a /Users/elias/src/c/xmlrpc-c/lib/expat/xmltok/.libs/libxmlrpc_xmltok.a
+
+xmlrpc_ht_server: xmlrpc_ht_server.c
+	gcc -o xmlrpc_ht_server  xmlrpc_ht_server.c -I/Users/elias/src/c/xmlrpc-c/include /Users/elias/src/c/xmlrpc-c/src/.libs/libxmlrpc_server_abyss.a /Users/elias/src/c/xmlrpc-c/src/.libs/libxmlrpc_server.a /Users/elias/src/c/xmlrpc-c/lib/abyss/src/.libs/libxmlrpc_abyss.a  -lpthread /Users/elias/src/c/xmlrpc-c/src/.libs/libxmlrpc.a /Users/elias/src/c/xmlrpc-c/lib/libutil/.libs/libxmlrpc_util.a /Users/elias/src/c/xmlrpc-c/lib/expat/xmlparse/.libs/libxmlrpc_xmlparse.a /Users/elias/src/c/xmlrpc-c/lib/expat/xmltok/.libs/libxmlrpc_xmltok.a

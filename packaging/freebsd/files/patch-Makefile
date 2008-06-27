@@ -1,0 +1,78 @@
+--- Makefile.orig	Thu Dec 13 14:52:59 2007
++++ Makefile	Wed Jan 30 14:08:19 2008
+@@ -48,11 +48,11 @@
+ skip_modules?=
+ 
+ # if not set on the cmd. line or the env, exclude this modules:
+-exclude_modules?= jabber cpl-c mysql postgres osp unixodbc \
+-	avp_radius auth_radius group_radius uri_radius xmpp \
++exclude_modules?= 	$(MYSQL) $(POSTGRESQL) $(CPL) $(SNMPSTATS) $(TLSOPS) $(UNIXODBC) \
++	${AUTHRADIUS} jabber osp avp_radius group_radius uri_radius xmpp \
+ 	presence presence_xml presence_mwi pua pua_bla pua_mi \
+ 	pua_usrloc pua_xmpp rls mi_xmlrpc perl snmpstats perlvdb \
+-	ldap carrierroute h350 xcap_client db_berkeley seas
++	ldap carrierroute h350 xcap_client db_berkeley
+ ifeq ($(TLS),)
+ 	exclude_modules+= tlsops
+ endif
+@@ -392,24 +392,11 @@
+ 		
+ # note: on solaris 8 sed: ? or \(...\)* (a.s.o) do not work
+ install-cfg: $(cfg-prefix)/$(cfg-dir)
+-		sed -e "s#/usr/.*lib/$(NAME)/modules/#$(modules-target)#g" \
+-			< etc/$(NAME).cfg > $(cfg-prefix)/$(cfg-dir)$(NAME).cfg.sample0
+-		sed -e "s#/usr/.*etc/$(NAME)/tls/#$(cfg-target)tls/#g" \
+-			< $(cfg-prefix)/$(cfg-dir)$(NAME).cfg.sample0 \
+-			> $(cfg-prefix)/$(cfg-dir)$(NAME).cfg.sample
+-		rm -fr $(cfg-prefix)/$(cfg-dir)$(NAME).cfg.sample0
+-		chmod 644 $(cfg-prefix)/$(cfg-dir)$(NAME).cfg.sample
+-		if [ -z "${skip_cfg_install}" -a \
+-				! -f $(cfg-prefix)/$(cfg-dir)$(NAME).cfg ]; then \
+-			mv -f $(cfg-prefix)/$(cfg-dir)$(NAME).cfg.sample \
+-				$(cfg-prefix)/$(cfg-dir)$(NAME).cfg; \
+-		fi
+ 		# radius dictionary
+-		$(INSTALL_TOUCH) $(cfg-prefix)/$(cfg-dir)/dictionary.radius.sample
+-		$(INSTALL_CFG) etc/dictionary.radius \
+-			$(cfg-prefix)/$(cfg-dir)/dictionary.radius.sample
++		$(INSTALL_TOUCH) $(cfg-prefix)/$(cfg-dir)/dictionary.radius.default
++		$(INSTALL_CFG) etc/dictionary.radius $(cfg-prefix)/$(cfg-dir)/dictionary.radius.default
+ 		if [ ! -f $(cfg-prefix)/$(cfg-dir)/dictionary.radius ]; then \
+-			mv -f $(cfg-prefix)/$(cfg-dir)/dictionary.radius.sample \
++			cp -f $(cfg-prefix)/$(cfg-dir)/dictionary.radius.default \
+ 				$(cfg-prefix)/$(cfg-dir)/dictionary.radius; \
+ 		fi
+ 		# openserctl config
+@@ -445,7 +432,7 @@
+ 		sed -e "s#/usr/local/lib/openser#$(lib-target)#g" | \
+ 		sed -e "s#/usr/local/etc/openser#$(cfg-target)#g"  >/tmp/openserctl
+ 		$(INSTALL_TOUCH) $(bin-prefix)/$(bin-dir)/openserctl
+-		$(INSTALL_BIN) /tmp/openserctl $(bin-prefix)/$(bin-dir)
++		$(BSD_INSTALL_SCRIPT) /tmp/openserctl $(bin-prefix)/$(bin-dir)
+ 		rm -fr /tmp/openserctl
+ 		sed -e "s#/usr/local/sbin#$(bin-target)#g" \
+ 			< scripts/openserctl.base > /tmp/openserctl.base
+@@ -492,10 +479,10 @@
+ 		sed -e "s#/usr/local/lib/openser#$(lib-target)#g" | \
+ 		sed -e "s#/usr/local/etc/openser#$(cfg-target)#g"  >/tmp/openserdbctl
+ 		$(INSTALL_TOUCH) $(bin-prefix)/$(bin-dir)/openserdbctl
+-		$(INSTALL_BIN) /tmp/openserdbctl $(bin-prefix)/$(bin-dir)
++		$(BSD_INSTALL_SCRIPT) /tmp/openserdbctl $(bin-prefix)/$(bin-dir)
+ 		rm -fr /tmp/openserdbctl
+ 		$(INSTALL_TOUCH)   $(bin-prefix)/$(bin-dir)/$(NAME)unix
+-		$(INSTALL_BIN) utils/$(NAME)unix/$(NAME)unix $(bin-prefix)/$(bin-dir)
++		$(BSD_INSTALL_SCRIPT) utils/$(NAME)unix/$(NAME)unix $(bin-prefix)/$(bin-dir)
+ 		# install dbtext stuff
+ 		mkdir -p $(modules-prefix)/$(lib-dir)/openserctl ; \
+ 		sed -e "s#/usr/local/share/openser#$(data-target)#g" \
+@@ -624,9 +611,7 @@
+ 			if [ -f modules/"$$r"/README ]; then \
+ 				$(INSTALL_TOUCH)  $(doc-prefix)/$(doc-dir)/README ; \
+ 				$(INSTALL_DOC)  modules/"$$r"/README  \
+-									$(doc-prefix)/$(doc-dir)/README ; \
+-				mv -f $(doc-prefix)/$(doc-dir)/README \
+-						$(doc-prefix)/$(doc-dir)/README."$$r" ; \
++					$(doc-prefix)/$(doc-dir)/README."$$r" ; \
+ 			fi ; \
+ 		fi ; \
+ 	done 

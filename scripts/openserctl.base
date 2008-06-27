@@ -1,0 +1,625 @@
+#
+# $Id: openserctl.base 4055 2008-04-21 00:22:12Z osas $
+#
+# sc: openser control; tool for maintaining openser
+#
+#===================================================================
+
+##### ----------------------------------------------- #####
+### path to useful tools
+locate_tool() {
+	TOOLPATH=""
+	while [ -n "$1" ]
+	do
+		if [ -x /usr/bin/which ] ; then
+			TOOLPATH=`which $1`
+			if [ -n "$TOOLPATH" ]; then
+				return
+			fi
+		fi
+		# look in common locations
+		if [ -x "/usr/bin/$1" ] ; then
+			TOOLPATH="/usr/bin/$1"
+			return
+		fi
+		if [ -x "/bin/$1" ] ; then
+			TOOLPATH="/bin/$1"
+			return
+		fi
+		if [ -x "/usr/local/bin/$1" ] ; then
+			TOOLPATH="/usr/local/bin/$1"
+			return
+		fi
+		shift
+	done
+	return
+}
+
+if [ -z "$EGREP" ] ; then
+	locate_tool egrep
+	if [ -z "$TOOLPATH" ] ; then
+		# now error, but we can look for alternative names if it is the case
+		echo "error: 'egrep' tool not found: set EGREP variable to correct tool path"
+		exit
+	fi
+	EGREP="$TOOLPATH"
+fi
+if [ -z "$AWK" ] ; then
+	locate_tool awk
+	if [ -z "$TOOLPATH" ] ; then
+		# now error, but we can look for alternative names if it is the case
+		echo "error: 'awk' tool not found: set AWK variable to correct tool path"
+		exit
+	fi
+	AWK="$TOOLPATH"
+fi
+if [ -z "$MD5" ]; then
+	locate_tool md5sum md5
+	if [ -z "$TOOLPATH" ] ; then
+		# now error, but we can look for alternative names if it is the case
+		echo "error: 'md5sum' or 'md5' tool not found: set MD5 variable to correct tool path"
+		exit
+	fi
+	MD5="$TOOLPATH"
+fi
+if [ -z "$LAST_LINE" ] ; then
+	locate_tool tail
+	if [ -z "$TOOLPATH" ] ; then
+		# now error, but we can look for alternative names if it is the case
+		echo "error: 'TAIL' tool not found: set TAIL variable to correct tool path"
+		exit
+	fi
+	LAST_LINE="$TOOLPATH -n 1"
+fi
+if [ -z "$EXPR" ] ; then
+	locate_tool expr
+	if [ -z "$TOOLPATH" ] ; then
+		# now error, but we can look for alternative names if it is the case
+		echo "error: 'expr' tool not found: set EXPR variable to correct tool path"
+		exit
+	fi
+	EXPR="$TOOLPATH"
+fi
+
+##### ------------------------------------------------ #####
+### configuration for starting/stopping openser
+if [ -z "$PID_FILE" ] ; then
+	PID_FILE=/var/run/openser.pid
+fi
+if [ -z "$SYSLOG" ] ; then
+	SYSLOG=1 # 0=output to console, 1=output to syslog
+fi
+if [ -z "$STARTOPTIONS" ] ; then
+	STARTOPTIONS= # for example -dddd
+fi
+if [ -z "$DIR" ] ; then
+	DIR=`dirname $0`
+fi
+if [ -z "$OSERBIN" ] ; then
+	OSERBIN=$DIR/openser
+fi
+
+##### ------------------------------------------------ #####
+### aliases configuration
+#
+ENABLE_ALIASES=0
+if [ "$ALIASES_TYPE" = "UL" ] ; then
+	ENABLE_ALIASES=1
+else
+	if [ "$ALIASES_TYPE" = "DB" ] ; then
+		ENABLE_ALIASES=2
+	fi
+fi
+
+##### ------------------------------------------------ #####
+### ACL name verification
+if [ -z "$VERIFY_ACL" ] ; then
+	VERIFY_ACL=1
+fi
+if [ -z "$ACL_GROUPS" ] ; then
+	ACL_GROUPS="local ld int voicemail free-pstn"
+fi
+
+##### ----------------------------------------------- #####
+#### Defined values
+ALL_METHODS=4294967295
+USERNAME_RE="[-a-zA-Z0-9&=\+\$,;\?/_\.\!~\*'\(\)]+"
+
+##### ----------------------------------------------- #####
+#### database tables for SQL databases and DBTEXT
+
+# UsrLoc Table
+if [ -z "$UL_TABLE" ] ; then
+	UL_TABLE=location
+fi
+USER_COLUMN=username
+DOMAIN_COLUMN=domain
+CALLID_COLUMN=callid
+
+# subscriber table
+if [ -z "$SUB_TABLE" ] ; then
+	SUB_TABLE=subscriber
+fi
+REALM_COLUMN=domain
+HA1_COLUMN=HA1
+HA1B_COLUMN=HA1B
+PASSWORD_COLUMN=password
+RPID_COLUMN=rpid
+SUBSCRIBER_COLUMN='username'
+EMAIL_COLUMN=email_address
+SUB_CREATED_COLUMN=datetime_created
+SUB_MODIFIED_COLUMN=datetime_modified
+PHP_LIB_COLUMN=phplib_id
+
+if [ -z "$STORE_PLAINTEXT_PW" ] ; then
+	STORE_PLAINTEXT_PW=1
+fi
+
+# acl table
+if [ -z "$ACL_TABLE" ] ; then
+	ACL_TABLE=grp
+fi
+ACL_USER_COLUMN=username
+ACL_DOMAIN_COLUMN=domain
+ACL_GROUP_COLUMN=grp
+ACL_MODIFIED_COLUMN=last_modified
+
+# aliases table
+if [ -z "$ALS_TABLE" ] ; then
+	ALS_TABLE=aliases
+fi
+A_USER_COLUMN=username
+A_CONTACT_COLUMN=contact
+A_EXPIRES_COLUMN=expires
+A_Q_COLUMN=q
+A_CALLID_COLUMN=callid
+A_CSEQ_COLUMN=cseq
+A_LAST_MODIFIED_COLUMN=last_modified
+
+# domain table
+if [ -z "$DOMAIN_TABLE" ] ; then
+	DOMAIN_TABLE=domain
+fi
+DO_DOMAIN_COLUMN=domain
+
+# lcr tables
+if [ -z "$LCR_TABLE" ] ; then
+	LCR_TABLE=lcr
+fi
+LCR_PREFIX_COLUMN=prefix
+LCR_FROMURI_COLUMN=from_uri
+LCR_GRPID_COLUMN=grp_id
+LCR_PRIO_COLUMN=priority
+
+# gw table
+if [ -z "$GW_TABLE" ] ; then
+	GW_TABLE=gw
+fi
+LCR_GW_GWNAME_COLUMN=gw_name
+LCR_GW_GRPID_COLUMN=grp_id
+LCR_GW_IP_COLUMN=ip_addr
+LCR_GW_PORT_COLUMN=port
+LCR_GW_URIS_COLUMN=uri_scheme
+LCR_GW_PROTO_COLUMN=transport
+LCR_GW_STRIP_COLUMN=strip
+LCR_GW_PREFIX_COLUMN=prefix
+
+# gw_grp table
+if [ -z "$GW_GRP_TABLE" ] ; then
+	GW_GRP_TABLE=gw_grp
+fi
+LCR_GRP_ID_COLUMN=grp_id
+LCR_GRP_NAME_COLUMN=grp_name
+
+# route_tree table
+if [ -z "$ROUTE_TREE_TABLE" ] ; then
+	ROUTE_TREE_TABLE=route_tree
+fi
+CARRIERROUTE_ROUTE_TREE_PREFIX_COLUMN=id
+CARRIERROUTE_ROUTE_TREE_CARRIER_COLUMN=carrier
+
+# carrierroute table
+if [ -z "$CARRIERROUTE_TABLE" ] ; then
+	CARRIERROUTE_TABLE=carrierroute
+fi
+CARRIERROUTE_CARRIERROUTE_PREFIX_COLUMN=id
+CARRIERROUTE_CARRIERROUTE_CARRIER_COLUMN=carrier
+CARRIERROUTE_CARRIERROUTE_SCAN_PREFIX_COLUMN=scan_prefix
+CARRIERROUTE_CARRIERROUTE_DOMAIN_COLUMN=domain
+CARRIERROUTE_CARRIERROUTE_PROB_COLUMN=prob
+CARRIERROUTE_CARRIERROUTE_STRIP_COLUMN=strip
+CARRIERROUTE_CARRIERROUTE_REWRITE_HOST_COLUMN=rewrite_host
+CARRIERROUTE_CARRIERROUTE_REWRITE_PREFIX_COLUMN=rewrite_prefix
+CARRIERROUTE_CARRIERROUTE_REWRITE_SUFFIX_COLUMN=rewrite_suffix
+CARRIERROUTE_CARRIERROUTE_COMMENT_COLUMN=comment
+
+# URI table
+if [ -z "$URI_TABLE" ] ; then
+	URI_TABLE=uri
+fi
+URIUSER_COLUMN=uri_user
+MODIFIED_COLUMN=last_modified
+
+# dbaliases table
+if [ -z "$DA_TABLE" ] ; then
+	DA_TABLE=dbaliases
+fi
+DA_USER_COLUMN=username
+DA_DOMAIN_COLUMN=domain
+DA_ALIAS_USER_COLUMN=alias_username
+DA_ALIAS_DOMAIN_COLUMN=alias_domain
+
+# speeddial table
+if [ -z "$SD_TABLE" ] ; then
+	SD_TABLE=speed_dial
+fi
+SD_USER_COLUMN=username
+SD_DOMAIN_COLUMN=domain
+SD_SD_USER_COLUMN=sd_username
+SD_SD_DOMAIN_COLUMN=sd_domain
+SD_NEW_URI_COLUMN=new_uri
+SD_DESC_COLUMN=description
+
+# avp table
+if [ -z "$AVP_TABLE" ] ; then
+	AVP_TABLE=usr_preferences
+fi
+
+AVP_UUID_COLUMN=uuid
+AVP_USER_COLUMN=username
+AVP_DOMAIN_COLUMN=domain
+AVP_ATTRIBUTE_COLUMN=attribute
+AVP_VALUE_COLUMN=value
+AVP_TYPE_COLUMN=type
+AVP_MODIFIED_COLUMN=last_modified
+
+# trusted table
+if [ -z "$TRUSTED_TABLE" ] ; then
+	TRUSTED_TABLE=trusted
+fi
+
+TRUSTED_SRC_IP_COLUMN=src_ip
+TRUSTED_PROTO_COLUMN=proto
+TRUSTED_FROM_PATTERN_COLUMN=from_pattern
+TRUSTED_TAG_COLUMN=tag
+
+# dispatcher tables  
+if [ -z "$DISPATCHER_TABLE" ] ; then
+	DISPATCHER_TABLE=dispatcher
+fi
+DISPATCHER_ID_COLUMN=id
+DISPATCHER_SETID_COLUMN=setid
+DISPATCHER_DESTINATION_COLUMN=destination
+DISPATCHER_DESCRIPTION_COLUMN=description
+
+#
+##### ------------------------------------------------ #####
+### usage functions
+#
+
+usage_base() {
+	echo
+	mecho " -- command 'start|stop|restart'"
+	echo
+cat <<EOF
+ restart ............................ restart OpenSER
+ start .............................. start OpenSER
+ stop ............................... stop OpenSER
+EOF
+}
+
+usage_tls() {
+	echo
+	mecho " -- command 'tls'"
+	echo
+cat <<EOF
+ tls rootCA [<etcdir>] .......... creates new rootCA
+ tls userCERT <user> [<etcdir>] ... creates user certificate
+ default <etcdir> is $ETCDIR/tls
+EOF
+}
+
+USAGE_FUNCTIONS="$USAGE_FUNCTIONS usage_base"
+
+usage_acl() {
+	echo
+	mecho " -- command 'acl' - manage access control lists (acl)"
+	echo
+cat <<EOF
+ acl show [<username>] .............. show user membership
+ acl grant <username> <group> ....... grant user membership (*)
+ acl revoke <username> [<group>] .... grant user membership(s) (*)
+EOF
+}
+USAGE_FUNCTIONS="$USAGE_FUNCTIONS usage_acl"
+
+usage_lcr() {
+	echo
+	mecho " -- command 'lcr' - manage least cost routes (lcr)"
+	echo
+cat <<EOF
+   * IP addresses must be entered in dotted quad format e.g. 1.2.3.4 *
+   * <uri_scheme> and <transport> must be entered in integer or text,*
+   * e.g. transport '2' is identical to transport 'tcp'.             *
+   *   scheme: 1=sip, 2=sips;   transport: 1=udp, 2=tcp, 3=tls       *
+   * Examples:  lcr addgw_grp usa 1                                  *
+   *            lcr addgw level3 1.2.3.4 5080 sip tcp 1              *
+   *            lcr addroute +1 '' 1 1                               *
+ lcr show .....................................................................
+           ............. show routes, gateways and groups
+ lcr reload ...................................................................
+           ............. reload lcr gateways
+ lcr addgw_grp <grp_name> <grp_id> ............................................
+           .............. add gateway group, autocreate grp_id if not present .
+ lcr rmgw_grp  <grp_id> .......................................................
+           ............... delete the gw_grp
+ lcr addgw <gw_name> <ip> <port> <scheme> <transport> <grp_id> <prefix> <strip>
+           ............... add a gateway with prefix and strip ................
+           ................(prefix and strip are optional arguments) ..........
+ lcr rmgw  <gw_name> ..........................................................
+           ............... delete a gateway
+ lcr addroute <prefix> <from> <grp_id> <prio> .................................
+           .............. add a route ( use '' to match anything in <from> )
+ lcr rmroute  <prefix> <from> <grp_id> <prio> .................................
+           .............. delete a route
+EOF
+}
+USAGE_FUNCTIONS="$USAGE_FUNCTIONS usage_lcr"
+
+usage_cr() {
+	echo
+	mecho " -- command 'cr' - manage carrierroute tables"
+	echo
+cat <<EOF
+ cr show ........................................................ show tables
+ cr reload ...................................................... reload tables
+ cr addrt <routing_tree_id> <routing_tree> ...................... add a tree
+ cr rmrt  <routing_tree> ........................................ rm a tree
+ cr addcarrier <carrier> <scan_prefix> <domain> <rewrite_host> ................
+               <prob> <strip> <rewrite_prefix> <rewrite_suffix> ...............
+               <comment> ........................................ add a carrier
+               (strip, rewrite_prefix, rewrite_suffix and comment are optional
+                arguments) ....................................................
+ cr rmcarrier  <carrier> <scan_prefix> <domain> ................. rm a carrier
+EOF
+}
+USAGE_FUNCTIONS="$USAGE_FUNCTIONS usage_cr"
+
+usage_rpid() {
+	echo
+	mecho " -- command 'rpid' - manage Remote-Party-ID (RPID)"
+	echo
+cat <<EOF
+ rpid add <username> <rpid> ......... add rpid for a user (*)
+ rpid rm <username> ................. set rpid to NULL for a user (*)
+ rpid show <username> ............... show rpid of a user
+EOF
+}
+USAGE_FUNCTIONS="$USAGE_FUNCTIONS usage_rpid"
+
+usage_subscriber() {
+	echo
+	mecho " -- command 'add|mail|passwd|rm' - manage subscribers"
+	echo
+cat <<EOF
+ add <username> <password> <email> .. add a new subscriber (*)
+ passwd <username> <passwd> ......... change user's password (*)
+ rm <username> ...................... delete a user (*)
+ mail <username> .................... send an email to a user
+EOF
+}
+USAGE_FUNCTIONS="$USAGE_FUNCTIONS usage_subscriber"
+
+usage_trusted() {
+	echo
+	mecho " -- command 'add|dump|reload|rm|show' - manage trusted"
+	echo
+cat <<EOF
+ trusted show ...................... show db content
+ trusted dump ...................... show cache content
+ trusted reload .................... reload db table into cache
+ trusted add <src_ip> <proto> <from_pattern> <tag>
+             ....................... add a new entry
+             ....................... (from_pattern and tag are optional arguments)
+ trusted rm <src_ip> ............... remove all entres for the given src_ip
+EOF
+}
+USAGE_FUNCTIONS="$USAGE_FUNCTIONS usage_trusted"
+
+usage_dispatcher() {
+	echo
+	mecho " -- command 'dispatcher' - manage dispatcher"
+	echo
+cat <<EOF
+   * Examples:  dispatcher addgw 1 sip:1.2.3.1:5050 'outbound gateway'
+   *            dispatcher addgw 2 sip:1.2.3.4:5050
+   *            dispatcher rmgw 4
+ dispatcher show ..................... show dispatcher gateways
+ dispatcher reload ................... reload dispatcher gateways
+ dispatcher dump ..................... show in memory dispatcher gateways
+ dispatcher addgw <setid> <destination> <description>
+            .......................... add gateway
+ dispatcher rmgw <id> ................ delete gateway
+EOF
+}
+USAGE_FUNCTIONS="$USAGE_FUNCTIONS usage_dispatcher"
+
+##### ----------------------------------------------- #####
+#### Common functions
+
+
+mdbg() {
+	if [ "0$VERBOSE" -ne 0 ] ; then
+		if [ -t 1 -a -z "$NOHLPRINT" ] ; then
+			echo -e "\033[1m$1\033[0m"
+		else
+			echo "$1"
+		fi
+	fi
+}
+
+mwarn() {
+	if [ -t 1 -a -z "$NOHLPRINT" ] ; then
+		echo -e '\E[37;32m'"\033[1mWARNING: $1\033[0m"
+	else
+		echo "** WARNING: $1"
+	fi
+}
+
+minfo() {
+	if [ -t 1 -a -z "$NOHLPRINT" ] ; then
+		echo -e '\E[37;33m'"\033[1mINFO: $1\033[0m"
+	else
+		echo "** INFO: $1"
+	fi
+}
+
+mecho() {
+	if [ -t 1 -a -z "$NOHLPRINT" ] ; then
+		echo -e "\033[1m$1\033[0m"
+	else
+		echo "$1"
+	fi
+}
+
+merr() {
+	if [ -t 1 -a -z "$NOHLPRINT" ] ; then
+		echo -e '\E[37;31m'"\033[1mERROR: $1\033[0m"
+	else
+		echo "** ERROR: $1"
+	fi
+}
+
+
+# determine host name, typically for use in printing UAC
+# messages; we use today a simplistic but portable uname -n way --
+# no domain name is displayed ; fifo_uac expands !! to host
+# address only for optional header fields; uname output without
+# domain is sufficient for informational header fields such as
+# From
+#
+get_my_host() {
+	if [ -z "$SIP_DOMAIN" ]; then
+		uname -n
+	else
+		echo "$SIP_DOMAIN"
+	fi
+}
+
+# calculate name and domain of current user
+set_user() {
+
+	OSERUSER=`echo $1|$AWK -F@ '{print $1}'`
+	OSERDOMAIN=`echo $1|$AWK -F@ '{print $2}'`
+
+	if [ -z "$OSERDOMAIN" ] ; then
+		OSERDOMAIN="$SIP_DOMAIN"
+	fi
+
+	if [ -z "$OSERDOMAIN" ] ; then
+		merr "domain unknown: use usernames with domain or set default domain \
+in SIP_DOMAIN"
+		exit 1
+	fi
+}
+
+# check the parameter if it is a valid address of record (user@domain)
+check_aor() {
+	echo "$1" | $EGREP "^$USERNAME_RE@.*\..*" >/dev/null
+	if [ $? -ne 0 ] ; then 
+		echo "error: invalid AoR: $1" > /dev/stderr
+		exit 1
+	fi
+}
+
+# check the parameter if it is a valid address of record (user@domain)
+is_aor() {
+	echo "$1" | $EGREP "^$USERNAME_RE@.*\..*" >/dev/null
+	if [ $? -ne 0 ] ; then 
+		false
+	else
+		true
+	fi
+}
+
+# check the parameter if it is a valid SIP address of record (sip:user@domain)
+check_sipaor() {
+	echo "$1" | $EGREP "^sip(s)?:$USERNAME_RE@.*\..*" >/dev/null
+	if [ $? -ne 0 ] ; then 
+		echo "error: invalid SIP AoR: $1" > /dev/stderr
+		exit 1
+	fi
+}
+
+# check the parameter if it is a valid SIP URI
+# quite simplified now -- it captures just very basic
+# errors
+check_uri() {
+	echo "$1" | $EGREP "^sip(s)?:($USERNAME_RE@)?.*\..*"  > /dev/null
+	if [ $? -ne 0 ] ; then 
+		echo "error: invalid SIP URI: $1" > /dev/stderr
+		exit 1
+	fi
+}
+
+print_status() {
+	echo $1 | grep "^[1-6][0-9][0-9]" > /dev/null
+	if [ "$?" -eq 0 ] ; then 
+		echo $1
+	else
+		echo "200 OK"
+	fi
+}
+
+# process output from FIFO/Unixsock server; if everything is ok
+# skip the first "ok" line and proceed to returned 
+# parameters
+filter_fl()
+{
+#	tail +2
+	
+	$AWK 'BEGIN {line=0;IGNORECASE=1;}
+		{line++}
+		NR == 1 && /^200 OK/ { next }
+		/^$/ { next }
+		{ print }'
+}
+
+# params: user, realm, password
+# output: HA1
+_gen_ha1()
+{
+	HA1=`echo -n "$1:$2:$3" | $MD5 | $AWK '{ print $1 }'`
+	if [ $? -ne 0 ] ; then
+		echo "HA1 calculation failed"
+		exit 1
+	fi
+}
+
+# params: user, realm, password
+# output: HA1B
+_gen_ha1b()
+{
+	HA1B=`echo -n "$1@$2:$2:$3" | $MD5 | $AWK '{ print $1 }'`
+	if [ $? -ne 0 ] ; then
+		echo "HA1B calculation failed"
+		exit 1
+	fi
+}
+
+# params: user, realm, password
+# output: PHPLIB_ID
+_gen_phplib_id()
+{
+	NOW=`date`;
+	PHPLIB_ID=`echo -n "$1$2:$3:$NOW" | $MD5 | $AWK '{ print $1 }'`
+}
+
+# params: user, password
+# output: HA1, HA1B
+credentials()
+{
+	set_user $1
+	_gen_ha1 "$OSERUSER" "$OSERDOMAIN" "$2"
+	_gen_ha1b "$OSERUSER" "$OSERDOMAIN" "$2"
+}

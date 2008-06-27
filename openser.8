@@ -1,0 +1,199 @@
+.\" $Id: openser.8 1699 2007-02-26 15:13:53Z miconda $
+.\" Process with
+.\" groff -man -Tascii openser.8
+.\" 
+.TH "OpenSER" "8" "08.06.2006" "OpenSER" "VoIP SIP Server"
+.SH "NAME"
+openser \- flexible and roboust SIP (RFC3261, RFC3263) server for Voice over IP (VoIP)
+
+.SH "SYNOPSIS"
+.B openser
+[
+.B \-hcCrRvdDEVT
+] [
+.BI \-f " config\-file"
+] [
+.BI \-l " address"
+] [
+.BI \-n " processes\-no"
+] [
+.BI \-N " tcp processes\-no"
+] [
+.BI \-b " max_rcv_buf_size"
+] [
+.BI \-m " shared_mem_size"
+] [
+.BI \-w " working\-dir"
+] [
+.BI \-W " method"
+] [
+.BI \-t " chroot\-dir"
+] [
+.BI \-u " uid"
+] [
+.BI \-g " gid"
+] [
+.BI \-P " pid\-file"
+] [
+.BI \-i " fifo\-path"
+] [
+.BI \-x " socket\-path"
+]
+
+.SH "DESCRIPTION"
+.B OpenSER 
+.BR  
+is a SIP\-based VoIP server running on most Unix\-like operating systems. It supports UDP, TCP and TLS transport layers. Among its features:
+.IP  *
+SIP Proxy Server, SIP Registrar Server, SIP Redirect Server, SIP Location Server, SIP Application Server
+.IP  *
+Call Processing Language (RFC3880)
+.IP  *
+ENUM support
+.IP  *
+server side NAT traversal
+.IP  *
+LCR \- least cost routing
+.IP  *
+load balancing
+.IP  *
+AAA with database (MySQL, Postgres, Unixodbc) or RADIUS backend
+.IP  *
+audio, video, instant messaging and pressence
+.SH "OPTIONS"
+.TP 12
+.B \-h
+Displays a short usage description, including all available options.
+.TP 
+.BI \-c
+Checks the config file and displays the aliases and listen interface list.
+.TP 
+.BI \-C
+Similar to \-c but in addition checks the flags of exported functions from included route blocks.
+.TP 
+.BI \-r
+Uses dns to check if it is necessary to add a "received=" field to a via.
+.TP 
+.BI \-R
+Same as 
+.B \-r
+but uses reverse dns.
+.TP 
+.BI \-v
+Turns on via host checking when forwarding replies.
+.TP 
+.BI \-d
+Turns on debugging, multiple
+.B \-d
+increase the debug level.
+.TP 
+.BI \-D
+Runs openser in the foreground (it doesn't fork into daemon mode).
+.TP 
+.BI \-E
+Sends all the log messages to stderr.
+.TP 
+.BI \-T
+Disables TCP support.
+.TP 
+.BI \-V
+Displays the version number.
+.TP 
+.BI \-f " config\-file"
+Reads the configuration from 
+.B " config\-file" 
+(default
+.I  /etc/openser/openser.cfg
+).
+.TP 
+.BI \-l " address"
+Listens on the specified address/interface. Multiple 
+.B \-l
+mean listening on multiple addresses. The address format is 
+[proto:]address[:port], where proto = udp|tcp and
+address = host|ip_address|interface_name. Example: \-l localhost, 
+\-l udp:127.0.0.1:5080, \-l eth0:5062.
+The default behaviour is to listen on all the ipv4 interfaces.
+.TP 
+.BI \-n " processes\-no"
+Specifies the number of children processes forked per interface (default 8).
+.TP 
+.BI \-N " tcp processes\-no"
+Specifies the number of children processes forked to handle tcp incoming connections (by default is equal to
+.BI \-n
+).
+.TP 
+.BI \-b " max_rcv_buf_size"
+Maximum receive buffer size which will not be exceeded by the auto\-probing procedure even if the OS allows.
+.TP 
+.BI \-m " shared_mem_size"
+Size of the shared memory which will be allocated (in Megabytes).
+.TP 
+.BI \-w " working\-dir" 
+Specifies the working directory. In the very improbable event that 
+.B openser 
+will crash, the core file will be generated here.
+.TP 
+.BI \-W " method"
+Specify poll method.
+.TP 
+.BI \-t " chroot\-dir"
+Forces 
+.B openser 
+to chroot after reading the config file.
+.TP 
+.BI \-u " uid"
+Changes the user id under which 
+.B openser
+runs.
+.TP 
+.BI \-g " gid"
+Changes the group id under which 
+.B openser 
+runs.
+.TP 
+.BI \-P " pid\-file"
+Creates a file containing the pid of the main 
+.B openser 
+process.
+.TP 
+.BI \-i " fifo\-path"
+Creates a fifo, usefull for monitoring
+.B openser
+status.
+.TP 
+.BI \-x " socket\-path"
+Creates a unix socket, usefull for monitoring
+.B openser
+status ( same as
+.BI \-i " fifo\-path" 
+but using instead unix sockets).
+
+
+.SH "FILES"
+.PD 0
+.B /usr/sbin/openser
+.br 
+.B /etc/openser/openser.cfg
+.br 
+.B /usr/lib/openser/modules/*
+.PD
+.SH "AUTHORS"
+see 
+.B /usr/share/doc/openser/AUTHORS
+
+.SH "SEE ALSO"
+.BR openser.cfg(5)
+.PP 
+Full documentation on openser is available at
+.I http://www.openser.org/.
+.PP 
+Project tracker and SVN
+.I 
+http://sourceforge.net/projects/openser/.
+.PP 
+Mailing lists:
+.nf 
+users@openser.org \- openser user community
+.nf 
+devel@openser.org \- openser development, new features and unstable version

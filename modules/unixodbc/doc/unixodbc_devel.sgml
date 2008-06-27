@@ -1,0 +1,23 @@
+<!-- Module Developer's Guide -->
+
+<chapter>
+	<chapterinfo>
+	<revhistory>
+		<revision>
+		<revnumber>$Revision: 425 $</revnumber>
+		<date>$Date: 2005-12-01 20:41:00 +0100 (Thu, 01 Dec 2005) $</date>
+		</revision>
+	</revhistory>
+	</chapterinfo>
+	<title>Developer's Guide</title>
+	<para>
+	The module implements the &ser; DB <acronym>API</acronym>, in order to 
+	be used by other modules.
+	</para>
+</chapter>
+
+<!-- Keep this element at the end of the file
+Local Variables:
+sgml-parent-document: ("unixodbc.sgml" "book" "chapter")
+End:
+-->

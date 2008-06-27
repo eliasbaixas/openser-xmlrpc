@@ -1,0 +1,22 @@
+<!-- Module Developer's Guide -->
+
+<chapter>
+    <chapterinfo>
+	<revhistory>
+	    <revision>
+		<revnumber>$Revision: 1120 $</revnumber>
+		<date>$Date: 2006-09-25 17:07:40 +0200 (Mon, 25 Sep 2006) $</date>
+	    </revision>
+	</revhistory>
+    </chapterinfo>
+    <title>Developer's Guide</title>
+    <para>
+	The module does not provide any <acronym>API</acronym> to use in other &ser; modules.
+    </para>
+</chapter>
+
+<!-- Keep this element at the end of the file
+Local Variables:
+sgml-parent-document: ("xmpp.sgml" "book" "chapter")
+End:
+-->

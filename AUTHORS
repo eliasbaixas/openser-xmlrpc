@@ -1,0 +1,215 @@
+# $Id: AUTHORS 2189 2007-05-10 15:34:51Z henningw $
+# The format of this file was inspired by the Linux kernel CREDITS file.
+# 
+# Authors and contributors are listed alphabetically (first name).
+# -- faster updated version is in "Contributions" page of openser.org
+#
+# The fields are: name (N), email (E), web-address (W), SVN account login (C),
+# PGP key ID and fingerprint (P), description (D), and activity status (S).
+
+
+
+N: Anca Vamanu
+C: anca_vamanu
+E: anca@voice-system.ro
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Andreas Granig
+C: agranig
+E: andreas.granig@inode.info
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Andrei Pelinescu - Onciul
+E: pelinescu-onciul@fokus.fraunhofer.de
+P: 2CF56A2D   D96D 8B80 BA31 9B93 6208  5D68 3910 FA00 2CF5 6A2D
+D: Core developer of SER
+S: INACTIVE
+
+
+N: Bastian Friedrich
+C: bastian
+E: bastian.friedrich@collax.com
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Bogdan Andrei Iancu
+C: bogdan_iancu
+E: bogdan@voice-system.ro
+W: http://www.voice-system.ro
+D: Core developer of SER / OpenSER
+S: ACTIVE
+
+
+N: Dan Pascu
+C: dan_pascu
+E: dan@ag-projects.com
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Daniel-Constantin Mierla
+C: miconda
+E: daniel@voice-system.ro
+W: http://www.voice-system.ro
+D: Core developer of SER / OpenSER
+S: ACTIVE
+
+
+N: Di-Shi Sun
+C: di-shi
+E: di-shi@transnexus.com
+D: Minor contributor to OpenSER
+S: ACTIVE
+
+
+N: Dmitry Isakbayev
+C: isakdim
+E: isakdim@gmail.com
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Elias Baixas
+C: eliasbaixas
+E: elias.baixas@voztele.com
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Gabriel Vasile
+D: Contributor to SER
+S: INACTIVE
+
+
+N: Greg Fausak
+D: Contributor to SER
+S: INACTIVE
+
+
+N: Henning Westerholt
+C: henningw
+E: henning.westerholt@1und1.de
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Jan Janak
+E: jan@iptel.org
+W: http://iptel.org/~janakj
+P: F8190A31   FCC0 3F4A 1ACB 84C2 505C  573E CC03 B08E F819 0A31
+D: Core developer of SER
+S: INACTIVE
+
+
+N: Jamey Hicks
+D: Contributor to SER
+S: INACTIVE
+
+
+N: Jeffrey Magder
+C: jmagder
+E: jmagder@somanetworks.com
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Jesus Rodrigues
+C: jerocu
+E: jesusr@voztele.com
+W: www.voztele.com
+D: Contributor to OpenSER
+S: ACTIVE
+
+N: Jiri Kuthan
+D: Main developer of SER
+S: INACTIVE
+
+
+N: Juha Heinanen
+C: juhe
+E: jh@tutpro.com
+W: http://lohi.eng.song.fi
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Klaus Darilion
+C: klaus_darilion
+E: klaus.mailinglists@pernau.at
+W: http://www.enum.at/
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Lavinia Andrei Spirea
+C: lavinia_andreea
+E: lavinia@voice-system.ro
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Marco Lorrai
+E: marco.lorrai@abbeynet.it
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Maxim Sobolev
+D: Contributor to SER
+S: INACTIVE
+
+
+N: Miklos Tirpak
+D: Contributor to SER
+S: INACTIVE
+
+
+N: Nils Ohlmeier
+E: nils@iptel.org
+W: http://www.ohlmeier.org
+P: BAD6CA40   B5E7 4FB0 800F 0A2C E3E9  4073 C7C3 F275 BAD6 CA40
+D: Contributor to SER
+S: INACTIVE
+
+
+N: Norman Brandinger
+C: goestelecom
+E: norm@goes.com
+D: Contributor to OpenSER
+S: ACTIVE
+
+
+N: Ramona-Elena Modroiu
+C: ramona
+E: ramona@voice-system.ro
+W: http://www.voice-system.ro
+D: Main developer of SER / OpenSER
+S: ACTIVE
+
+
+N: Raphael Coeffic
+E: raphael.coeffic@gmx.de
+D: Minor contributor to SER
+S: INACTIVE
+
+
+N: Ricardo Baratto
+D: Minor contributor to SER
+S: INACTIVE
+
+
+N: Ron Winacott
+C: karwin
+E: ronw@somanetworks.com
+D: Contributor to OpenSER
+S: ACTIVE
+
+N: Stelios Sidiroglou-Douskos
+D: Minor contributor to SER
+S: INACTIVE
+
