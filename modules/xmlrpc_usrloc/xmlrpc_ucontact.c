@@ -229,6 +229,7 @@ int xmlrpc_insert_ucontact(ucontact_t* _c)
    xmlrpc_value *result;
 
    len = 14 + /* 13 fields with one LF each + 1 extra LF*/
+      strlen("contact_uri=expires=q=cseq=call-id=flags=cflags=user_agent=received_socket=path=socket=method=last_modified=") +
       _c->c.len + /*contact */
       (expiresl=snprintf(expires,MAX_BUFS,"%d",_c->expires)) +  /*expires*/
       (ql=snprintf(q,MAX_BUFS,"%d",_c->q))+ /* q value*/
@@ -244,7 +245,7 @@ int xmlrpc_insert_ucontact(ucontact_t* _c)
       (lastmodl=snprintf(lastmod,MAX_BUFS,"%d",_c->last_modified)) +
       RECORD_END_LEN;
    where=pkg_malloc(len+1);
-   len=snprintf(where,len+1,"%.*s\n%.*s\n%.*s\n%.*s\n%.*s\n%.*s\n%.*s\n%.*s\n%.*s\n%.*s\n%.*s\n%.*s\n%.*s\n%.*s\n",
+   len=snprintf(where,len+1,"contact_uri=%.*s\nexpires=%.*s\nq=%.*s\ncseq=%.*s\ncall-id=%.*s\nflags=%.*s\ncflags=%.*s\nuser_agent=%.*s\nreceived_socket=%.*s\npath=%.*s\nsocket=%.*s\nmethod=%.*s\nlast_modified=%.*s\n%.*s\n",
 	 _c->c.len,_c->c.s,
 	 expiresl,expires,
 	 ql,q,

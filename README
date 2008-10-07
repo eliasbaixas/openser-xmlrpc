@@ -7,7 +7,7 @@ This module in an XML-RPC interface to a Bamboo-based P2P overlay network.
 
 To make the module and openser, try:
 make
-make modules="modules/xmlrpc_usrloc modules/tm modules/rr modules/sl modules/maxfwd modules/registrar modules/uri modules/presence modules/presence_xml" modules
+make modules="modules/mysql modules/xmlrpc_usrloc modules/tm modules/rr modules/sl modules/maxfwd modules/registrar modules/uri modules/presence modules/presence_xml modules/textops" modules
 
 then you can use as OpenSER configuration file something like this: <<END_OF_CONFIG
 debug=6
@@ -20,7 +20,9 @@ listen=tcp:127.0.0.1:5060
 loadmodule "modules/xmlrpc_usrloc/xmlrpc_usrloc.so"
 loadmodule "modules/tm/tm.so"
 loadmodule "modules/sl/sl.so"
+loadmodule "modules/mysql/mysql.so"
 loadmodule "modules/rr/rr.so"
+loadmodule "modules/textops/textops.so"
 loadmodule "modules/maxfwd/maxfwd.so"
 loadmodule "modules/registrar/registrar.so"
 loadmodule "modules/uri/uri.so"
@@ -119,4 +121,45 @@ run ps -A|grep java to see if the instances are running
 to stop the instances, you could do
 
 for i in conf/tmp/pid-*; do kill $(cat $i); done
+
+then go get a UserAgent and register your username to OpenSER (username@host).
+
+This will insert username@host into the DHT, you can now connect to Bamboo's GUI (web page)
+in http://127.0.0.1:5869/ (or some other odd port, try doing 'netstat -naptu' or 'lsof -i -P' if you're a freeBSD'er)
+and you should see how the DHT gets populated with records.
+
+From python/opendht you could also do a ./get.py -g http://localhost:5851/RPC2 username@host
+and you will see all the records registered for the given user. 
+
+we're also trying to get nist's SIP InstantMessenger to work with openser, without success at the moment, but we're getting there.
+to start it, go to your chat-p2p-sip directory (where the code resides) and launch:
+
+java -Dlog4j.configuration=file://${project_loc:chat-p2p-sip}/conf/log4j.properties gov.nist.sip.instantmessaging.InstantMessagingGUI -cf conf/elias.properties
+
+with conf/elias.properties being:
+examples.im.outboundProxyAddress=127.0.0.1
+examples.im.outboundProxyPort=5060
+examples.im.registrarAddress=127.0.0.1
+examples.im.registrarPort=5060
+examples.im.imAddress=127.0.0.1
+examples.im.imPort=5070
+examples.im.imProtocol=udp
+examples.im.outputFile=./debug/output.txt
+examples.im.buddiesFile=./conf/buddies_elias.xml
+examples.im.authenticationFile=./conf/auth_elias.xml
+examples.im.defaultRouter=gov.nist.sip.instantmessaging.presence.IMRouter
+examples.im.localSipURL=sip:elias@localhost
+
+conf/buddies_elias.xml:
+<?xml version='1.0' encoding='us-ascii'?> 
+<BUDDIES> 
+<buddy uri="sip:kripton@localhost" />
+</BUDDIES> 
+
+and conf/auth_elias.xml:
+<?xml version='1.0' encoding='us-ascii'?> 
+<AUTHENTICATION>
+<User name="elias" realm="localhost" password="hola" />
+</AUTHENTICATION> 
+
 

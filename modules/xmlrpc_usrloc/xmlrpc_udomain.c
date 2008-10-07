@@ -188,11 +188,13 @@ static inline ucontact_info_t* my_row2info( str *vals, str *contact)
    p=vals->s;
    len=vals->len;
 
+   for (;(len>0)&&(*p!='=');p++,len--);
    contact->s = p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    contact->len = (int) (p - contact->s);
 
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    expires.s = p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    expires.len = (int) (p - expires.s);
@@ -200,6 +202,7 @@ static inline ucontact_info_t* my_row2info( str *vals, str *contact)
    str2int(&expires,(unsigned int*)&ci.expires);
 
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    q.s = p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    q.len = (int) (p - q.s);
@@ -207,6 +210,7 @@ static inline ucontact_info_t* my_row2info( str *vals, str *contact)
    str2int(&q,(unsigned int*)&ci.q);
 
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    cseqn.s = p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    cseqn.len = (int) (p - cseqn.s);
@@ -214,6 +218,7 @@ static inline ucontact_info_t* my_row2info( str *vals, str *contact)
    str2int(&cseqn,(unsigned int*)&ci.cseq);
 
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    callid.s = p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    callid.len = (int) (p - callid.s);
@@ -221,24 +226,28 @@ static inline ucontact_info_t* my_row2info( str *vals, str *contact)
    ci.callid = &callid;
 
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    flags.s = p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    flags.len = (int) (p - flags.s);
    str2int(&flags,(unsigned int*)&ci.flags);
 
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    cflags.s=p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    cflags.len = (int) (p - cflags.s);
    str2int(&cflags,(unsigned int*)&ci.cflags);
 
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    ua.s  = p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    ua.len = (int) (p - ua.s);
    ci.user_agent = &ua;
 
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    received.s  = p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    received.len = (int) (p - received.s);
@@ -246,6 +255,7 @@ static inline ucontact_info_t* my_row2info( str *vals, str *contact)
    ci.received = received;
 
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    path.s  = p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    path.len = (int) (p - path.s);
@@ -253,6 +263,7 @@ static inline ucontact_info_t* my_row2info( str *vals, str *contact)
    ci.path= &path;
 
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    hostport.s  = p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    hostport.len = (int) (p - hostport.s);
@@ -269,6 +280,7 @@ static inline ucontact_info_t* my_row2info( str *vals, str *contact)
 
    /* supported methods */
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    methods.s=p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    methods.len = (int) (p - methods.s);
@@ -281,6 +293,7 @@ static inline ucontact_info_t* my_row2info( str *vals, str *contact)
 
    /* last modified time */
    if ((*p=='\n')&&(len>0)) { p++;len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    lastmod.s=p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    lastmod.len = (int) (p - lastmod.s);
@@ -288,6 +301,7 @@ static inline ucontact_info_t* my_row2info( str *vals, str *contact)
       ci.last_modified = str2int(&lastmod,(unsigned int*)&ci.last_modified);
    }
    if ((*p=='\n')&&(len>0)) { p++; len--; }
+   for (;(len>0)&&(*p!='=');p++,len--);
    end_of_record.s=p;
    for (;(len>0)&&(*p!='\n');p++,len--);
    end_of_record.len=len;
